@@ -30,4 +30,5 @@ const update = async (data, condition) => {
     condition.value,
   ]);
 };
+
 module.exports = { checkExistingUser, create, update };
