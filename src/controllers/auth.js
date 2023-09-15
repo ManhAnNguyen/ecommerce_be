@@ -109,4 +109,24 @@ const refreshToken = async (req, res) => {
   res.status(200).json(accessToken);
 };
 
-module.exports = { register, login, changePassword, refreshToken };
+const logout = async (req, res) => {
+  //FE also delete token in localstorage
+  const { refreshToken } = req.cookies || {};
+  if (!refreshToken) return res.sendStatus(200);
+
+  //clear refresh token in db
+  const decoded = jwt.verify(refreshToken, process.env.REFRESH_TOKEN);
+  if (!decoded) return res.sendStatus(200);
+
+  const existingUser = await userService.checkExistingUser(decoded.user_id);
+  if (!existingUser) return res.sendStatus(200);
+
+  await userService.update(
+    { refreshToken: null },
+    { key: "id", value: decoded.user_id }
+  );
+  res.clearCookie("refreshToken");
+  res.sendStatus(200);
+};
+
+module.exports = { register, login, changePassword, refreshToken, logout };

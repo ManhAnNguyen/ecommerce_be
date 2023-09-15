@@ -5,6 +5,7 @@ const handleJWT = require("../middlewares/handleJWT");
 router.post("/register", authController.register);
 router.post("/login", authController.login);
 router.get("/refreshToken", authController.refreshToken);
+router.delete("/logout", authController.logout);
 
 //verify jwt
 router.use(handleJWT);
