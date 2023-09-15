@@ -1,10 +1,14 @@
-require("dotenv");
+require("dotenv").config();
+require("express-async-errors");
 
 const express = require("express");
 const app = express();
 const cookieParser = require("cookie-parser");
 const bodyParser = require("body-parser");
+
 const path = require("path");
+const errorHandle = require("./src/middlewares/handleError");
+const PORT = process.env.PORT || 1308;
 
 //serve cookie
 app.use(cookieParser());
@@ -25,6 +29,7 @@ app.get("/", (req, res) => {
 
 app.use("/auth", require("./src/routes/auth"));
 
-const PORT = process.env.PORT || 1308;
+//handle error
+app.use(errorHandle);
 
 app.listen(PORT, () => console.log(`Server is running in port ${PORT}`));
