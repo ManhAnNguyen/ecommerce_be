@@ -32,7 +32,7 @@ const login = async (req, res) => {
   const comparePwd = bcrypt.compareSync(password, existingUser.password);
   const infoUser = {
     user_id: existingUser.id,
-    username: existingUser.id,
+    username: existingUser.username,
   };
 
   if (!comparePwd)
@@ -57,11 +57,56 @@ const login = async (req, res) => {
   );
 
   res.cookie("refreshToken", refreshToken, {
-    secure: true,
+    // secure: true,
     httpOnly: true,
     expires: moment().add("1", "day").toDate(),
   });
   res.status(200).json(accessToken);
 };
 
-module.exports = { register, login };
+const changePassword = async (req, res) => {
+  const { currentPassword, newPassword } = req.body;
+
+  const { user_id } = req.user;
+  if (!currentPassword || !newPassword)
+    throw new AppError("currentPassword and newPassword are required", 400);
+  const { password } = (await userService.checkExistingUser(user_id)) || {};
+
+  const comparePwd = bcrypt.compareSync(currentPassword, password);
+  if (!comparePwd) throw new AppError("Current password is not correct", 400);
+
+  const hashedPwd = bcrypt.hashSync(newPassword, +process.env.HASH_PWD);
+  await userService.update(
+    {
+      password: hashedPwd,
+    },
+    {
+      key: "id",
+      value: user_id,
+    }
+  );
+  res.sendStatus(200);
+};
+
+const refreshToken = async (req, res) => {
+  const { refreshToken } = req.cookies || {};
+  if (!refreshToken) throw new AppError("must be provide refreshToken", 400);
+
+  const decoded = jwt.verify(refreshToken, process.env.REFRESH_TOKEN);
+  if (!decoded) throw new AppError("incorrect refreshToken", 400);
+
+  const existingUser = await userService.checkExistingUser(decoded.user_id);
+  if (!existingUser) throw new AppError("incorrect refreshToken");
+
+  const infoUser = {
+    user_id: existingUser.id,
+    username: existingUser.username,
+  };
+  const accessToken = jwt.sign(infoUser, process.env.ACCESS_TOKEN, {
+    expiresIn: "1d",
+  });
+
+  res.status(200).json(accessToken);
+};
+
+module.exports = { register, login, changePassword, refreshToken };
