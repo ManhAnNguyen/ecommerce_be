@@ -9,7 +9,6 @@ const login = async (req, res) => {
     throw new AppError("username and password are required", 400);
   }
 
-  console.log(bcrypt.hashSync(password, 10));
   const existingAdmin = await adminService.checkExistingAdmin(username);
   if (!existingAdmin)
     throw new AppError("username or password is not correct", 404);

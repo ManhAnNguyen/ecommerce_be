@@ -1,9 +1,10 @@
 const db = require("./db.service.js");
 
-const checkExistingAdmin = async (admin_id) => {
-  const result = await db.query(`SELECT * FROM admin WHERE admin_id = ?`, [
-    admin_id,
-  ]);
+const checkExistingAdmin = async (info) => {
+  const result = await db.query(
+    `SELECT * FROM admin WHERE admin_id = ? OR username = ?`,
+    [info, info]
+  );
 
   return result[0];
 };
