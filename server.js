@@ -8,6 +8,7 @@ const bodyParser = require("body-parser");
 
 const path = require("path");
 const errorHandle = require("./src/middlewares/handleError");
+const handleJWT = require("./src/middlewares/handleJWT");
 const PORT = process.env.PORT || 1308;
 
 //serve cookie
@@ -28,6 +29,12 @@ app.get("/", (req, res) => {
 });
 
 app.use("/auth", require("./src/routes/auth"));
+app.use("/admin", require("./src/routes/admin"));
+
+//jwt
+app.use(handleJWT);
+app.use("/address", require("./src/routes/address"));
+app.use("/user", require("./src/routes/users"));
 
 //handle error
 app.use(errorHandle);
