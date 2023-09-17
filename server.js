@@ -34,6 +34,7 @@ app.use("/admin", require("./src/routes/admin"));
 //jwt
 app.use(handleJWT);
 app.use("/address", require("./src/routes/address"));
+app.use("/user", require("./src/routes/users"));
 
 //handle error
 app.use(errorHandle);
