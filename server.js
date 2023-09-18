@@ -30,11 +30,11 @@ app.get("/", (req, res) => {
 
 app.use("/auth", require("./src/routes/auth"));
 app.use("/admin", require("./src/routes/admin"));
+app.use("/user", require("./src/routes/users"));
 
 //jwt
 app.use(handleJWT);
 app.use("/address", require("./src/routes/address"));
-app.use("/user", require("./src/routes/users"));
 
 //handle error
 app.use(errorHandle);
