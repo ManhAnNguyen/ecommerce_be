@@ -28,6 +28,9 @@ router.post("/address", userController.createAddress);
 router.post("/address/:id", userController.updateAddress);
 router.delete("/address/:id", userController.deleteAddress);
 router.patch("/address/set-default", userController.setDefaultAddress);
+router.post("/bank", userController.addBankUser);
+router.delete("/bank", userController.removeBankUser);
+router.post("/bank/set-default", userController.setDefaultBank);
 
 router.use(handleRole);
 router.get("/get-all", userController.getAllUser);

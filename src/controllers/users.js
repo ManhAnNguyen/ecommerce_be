@@ -76,6 +76,35 @@ const updateUser = async (req, res) => {
   res.sendStatus(200);
 };
 
+const addBankUser = async (req, res) => {
+  const { user_id } = req.user;
+
+  const { bank_id } = req.body;
+  if (!bank_id) throw new AppError("bank_id is required", 400);
+  await userService.addBankUser(bank_id, user_id);
+  res.sendStatus(200);
+};
+
+const removeBankUser = async (req, res) => {
+  const { user_id } = req.user;
+
+  const { bank_id } = req.body;
+  if (!bank_id) throw new AppError("bank_id is required", 400);
+  await userService.removeBank(bank_id, user_id);
+  res.sendStatus(200);
+};
+
+const setDefaultBank = async (req, res) => {
+  const { user_id } = req.user;
+  const { bank_id, isDefault } = req.body;
+
+  if (!bank_id || isDefault === undefined)
+    throw new AppError("bank_id and isdefault are required", 400);
+
+  await userService.setDefaultBank(bank_id, user_id, isDefault);
+  res.sendStatus(200);
+};
+
 module.exports = {
   getMe,
   getDetailUser,
@@ -85,4 +114,7 @@ module.exports = {
   setDefaultAddress,
   getAllUser,
   updateUser,
+  addBankUser,
+  removeBankUser,
+  setDefaultBank,
 };

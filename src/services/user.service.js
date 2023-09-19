@@ -64,7 +64,19 @@ S_T.total_price_order,
     join province as P on P.id = U_D.province_id
 	WHERE U_D.user_id = U.id 
 
-) as address
+) as address,
+(
+	select json_arrayagg (
+		json_object(
+			      'id' ,B.id,
+            "name",B.name,
+            'code',B.code,
+            'isDefault',U_B.isDefault
+        )
+    ) from user_bank as U_B
+    join banks as B on B.id = U_B.bank_id
+    WHERE U_B.user_id = U.id
+) as banks
 from users as U  
 left join statistic_user as S_T 
 on U.id = S_T.user_id
@@ -150,6 +162,31 @@ const setDefaultAddress = async (id) => {
 
 //banks
 
+const addBankUser = (bank_id, user_id) =>
+  db.query(`INSERT INTO user_bank (user_id,bank_id) VALUES (?,?) `, [
+    user_id,
+    bank_id,
+  ]);
+
+const removeBank = (bank_id, user_id) =>
+  db.query(`DELETE FROM user_bank WHERE user_id = ? AND bank_id = ?`, [
+    user_id,
+    bank_id,
+  ]);
+
+const setDefaultBank = async (bank_id, user_id, isDefault) => {
+  if (Boolean(isDefault)) {
+    await db.query(
+      `UPDATE  user_bank SET isDefault = null WHERE bank_id <> ? AND user_id = ?`,
+      [bank_id, user_id]
+    );
+  }
+  await db.query(
+    `UPDATE user_bank SET isDefault = ? WHERE bank_id = ? AND user_id = ?`,
+    [isDefault, bank_id, user_id]
+  );
+};
+
 module.exports = {
   checkExistingUser,
   create,
@@ -161,4 +198,7 @@ module.exports = {
   deleteAddress,
   setDefaultAddress,
   getAllUser,
+  addBankUser,
+  removeBank,
+  setDefaultBank,
 };
