@@ -2,6 +2,7 @@ const AppError = require("../errors/AppError");
 const adminService = require("../services/admin.service");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const userService = require("../services/user.service");
 
 const login = async (req, res) => {
   const { username, password } = req.body;
@@ -29,4 +30,17 @@ const login = async (req, res) => {
   res.status(200).json(accessToken);
 };
 
-module.exports = { login };
+const lockedUser = async (req, res) => {
+  const { id, locked } = req.body;
+  if (!id) throw new AppError("id must be required", 400);
+
+  const findUser = await userService.checkExistingUser(id);
+  console.log(locked);
+  await userService.update(
+    { locked: locked || false },
+    { key: "id", value: findUser.id }
+  );
+  res.sendStatus(200);
+};
+
+module.exports = { login, lockedUser };

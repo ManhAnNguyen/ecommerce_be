@@ -13,28 +13,26 @@ const PORT = process.env.PORT || 1308;
 
 //serve cookie
 app.use(cookieParser());
-
-// parse application/x-www-form-urlencoded
-app.use(bodyParser.urlencoded({ extended: true }));
-
 // parse application/json
 app.use(bodyParser.json());
+// parse application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded({ extended: true }));
 
 //serve static file
 app.use(express.static("public"));
 
 //routes
 app.get("/", (req, res) => {
-  res.sendFile(path.join(__dirname, "public", "views", "index.html"));
+  res.sendFile(path.join(__dirname, "src", "views", "index.html"));
 });
 
 app.use("/auth", require("./src/routes/auth"));
 app.use("/admin", require("./src/routes/admin"));
-
+app.use("/user", require("./src/routes/users"));
+app.use("/bank", require("./src/routes/bank"));
 //jwt
 app.use(handleJWT);
 app.use("/address", require("./src/routes/address"));
-app.use("/user", require("./src/routes/users"));
 
 //handle error
 app.use(errorHandle);
