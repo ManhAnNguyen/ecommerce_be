@@ -29,7 +29,11 @@ const login = async (req, res) => {
   const existingUser = await userService.checkExistingUser(username);
   if (!existingUser)
     throw new AppError("username or password is not correct", 404);
+  if (Boolean(existingUser.locked)) {
+    throw new AppError("your account is locked", 403);
+  }
   const comparePwd = bcrypt.compareSync(password, existingUser.password);
+
   const infoUser = {
     user_id: existingUser.id,
     username: existingUser.username,
