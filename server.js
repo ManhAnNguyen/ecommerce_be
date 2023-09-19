@@ -30,6 +30,8 @@ app.use("/auth", require("./src/routes/auth"));
 app.use("/admin", require("./src/routes/admin"));
 app.use("/user", require("./src/routes/users"));
 app.use("/bank", require("./src/routes/bank"));
+app.use("/category", require("./src/routes/category"));
+
 //jwt
 app.use(handleJWT);
 app.use("/address", require("./src/routes/address"));
