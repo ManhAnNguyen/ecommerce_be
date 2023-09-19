@@ -1,5 +1,12 @@
 const AppError = require("../errors/AppError");
 const userService = require("../services/user.service");
+const moment = require("moment");
+
+const getAllUser = async (req, res) => {
+  const result = await userService.getAllUser();
+
+  res.status(200).json(result);
+};
 
 const getMe = async (req, res) => {
   const { user_id } = req.user;
@@ -57,6 +64,18 @@ const setDefaultAddress = async (req, res) => {
   res.sendStatus(200);
 };
 
+const updateUser = async (req, res) => {
+  const file = req.file;
+  const avatar = file && `/${file.fieldname}/${file.filename}`;
+  const { user_id } = req.user;
+
+  userService.update(
+    { ...req.body, avatar: avatar || null, created_at: moment().toDate() },
+    { key: "id", value: user_id }
+  );
+  res.sendStatus(200);
+};
+
 module.exports = {
   getMe,
   getDetailUser,
@@ -64,4 +83,6 @@ module.exports = {
   updateAddress,
   deleteAddress,
   setDefaultAddress,
+  getAllUser,
+  updateUser,
 };

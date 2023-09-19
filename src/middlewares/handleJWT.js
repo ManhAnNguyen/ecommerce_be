@@ -23,6 +23,7 @@ module.exports = async (req, res, next) => {
     };
   } else {
     const findUser = await userService.checkExistingUser(user_id);
+
     if (!findUser) throw new AppError("Unauthorized", 401);
     const { iat, exp, ...rest } = decoded;
     req.user = {

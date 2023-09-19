@@ -76,6 +76,26 @@ WHERE U.id = ?;
   return result[0];
 };
 
+const getAllUser = () =>
+  db.query(`
+select U.id as id,
+U.username,
+U.email,
+U.phone,
+U.gender,
+U.birthday,
+U.created_at,
+U.updated_at,
+U.rank_user,
+U.avatar,
+U.locked,
+S_T.total_item_order,
+S_T.total_price_order
+from users as U  
+left join statistic_user as S_T 
+on U.id = S_T.user_id
+`);
+
 //address
 const createAddressUser = async (newAddress) => {
   const keys = Object.keys(newAddress);
@@ -128,7 +148,7 @@ const setDefaultAddress = async (id) => {
   ]);
 };
 
-//
+//banks
 
 module.exports = {
   checkExistingUser,
@@ -140,4 +160,5 @@ module.exports = {
   findUserAddress,
   deleteAddress,
   setDefaultAddress,
+  getAllUser,
 };
