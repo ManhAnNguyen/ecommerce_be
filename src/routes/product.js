@@ -9,6 +9,8 @@ router.get("/", productController.get);
 
 router.use(handleJWT, handleRole);
 router.post("/", upload("products").single("image"), productController.create);
+router.post("/hidden", productController.hiddenProduct);
+
 router.post(
   "/:id",
   upload("products").single("image"),
