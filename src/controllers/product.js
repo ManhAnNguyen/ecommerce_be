@@ -2,6 +2,7 @@ const db = require("../services/db.service");
 const AppError = require("../errors/AppError");
 const productService = require("../services/product.service");
 const moment = require("moment");
+const { ConfigStatusOrder } = require("../constants/user");
 
 const get = async (req, res) => {
   const {
@@ -123,4 +124,123 @@ const hiddenProduct = async (req, res) => {
   res.sendStatus(200);
 };
 
-module.exports = { get, create, update, hiddenProduct };
+const createReview = async (req, res) => {
+  const { user_id } = req.user;
+  const { product_id, comment, ...rest } = req.body;
+  if (!product_id || !comment)
+    throw new AppError(`id and comment are required`, 400);
+  const file = req.file;
+
+  let fileName = "";
+
+  if (file) {
+    const { filename, destination } = file;
+    fileName = `/${destination.split("/").reverse()[0]}/${filename}`;
+  }
+
+  const orderUser = (
+    await db.query(
+      `
+         SELECT * FROM orders as O 
+         join order_items as O_I 
+         on O.id = O_I.order_id
+         WHERE O_I.product_id = ? AND O.user_id = ? AND status = ?
+      `,
+      [product_id, user_id, ConfigStatusOrder.SHIPPED]
+    )
+  )[0];
+
+  if (!orderUser) throw new AppError("you dont have order with product", 400);
+
+  await productService.insertReviewProduct({
+    ...rest,
+    comment,
+    product_id,
+    user_id,
+    image: fileName,
+    created_at: moment().toDate(),
+  });
+  res.sendStatus(200);
+};
+
+const updateReview = async (req, res) => {
+  const { user_id } = req.user;
+  const { review_id, ...rest } = req.body;
+  if (!review_id) throw new AppError(`id  is required`, 400);
+  const file = req.file;
+
+  let fileName = "";
+
+  if (file) {
+    const { filename, destination } = file;
+    fileName = `/${destination.split("/").reverse()[0]}/${filename}`;
+  }
+
+  const reviewItem = (
+    await db.query(
+      `SELECT * FROM review_product WHERE id = ? AND user_id = ?`,
+      [review_id, user_id]
+    )
+  )[0];
+
+  if (!reviewItem) throw new AppError("you no have permissions", 403);
+  await productService.updateReviewProduct(
+    { ...rest, image: fileName, updated_at: moment().toDate() },
+    review_id
+  );
+  res.sendStatus(200);
+};
+
+const deleteProduct = async (req, res) => {
+  const { user_id } = req.user;
+  const { id } = req.body;
+  if (!id) throw new AppError("id must be required", 400);
+  const reviewItem = (
+    await db.query(
+      `SELECT * FROM review_product WHERE id = ? AND user_id = ?`,
+      [id, user_id]
+    )
+  )[0];
+
+  if (!reviewItem) throw new AppError("you no have permissions", 403);
+  await productService.deleteReview(id);
+  res.sendStatus(200);
+};
+
+const getReview = async (req, res) => {
+  const { productId } = req.params;
+  const { take: _take, page: _page } = req.query;
+  const take = +(_take || "10");
+  const page = +(_page || "1");
+  const limit = `${(page - 1) * take},${take * page}`;
+  const total = (
+    await db.query(
+      `SELECT COUNT(*) as total from review_product WHERE product_id = ?`,
+      [productId]
+    )
+  )[0].total;
+  if (!productId) throw new AppError("id must be required", 400);
+  const docs = await productService.getReview(productId, limit);
+  res.status(200).json({
+    docs,
+    metadata: {
+      page,
+      take,
+      total,
+      totalPage: Math.ceil(total / take),
+      hasPreviousPage: page > 1,
+      hasNextPage: page < Math.ceil(total / take),
+    },
+  });
+};
+
+module.exports = {
+  get,
+  create,
+  update,
+  hiddenProduct,
+  createReview,
+  updateReview,
+  deleteProduct,
+  getReview,
+};
