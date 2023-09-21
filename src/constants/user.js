@@ -11,6 +11,22 @@ const ConfigStatusOrder = {
   REJECTED: "REJECTED",
   CANCELING: "CANCELING",
   CANCELED: "CANCELED",
+  REJECTED_CANCEL: "REJECTED_CANCEL",
+  SHIPPED: "SHIPPED",
 };
 
-module.exports = { ConfigRank, ConfigStatusOrder };
+const statusAllowedApprovedRejected = [ConfigStatusOrder.PENDING];
+const statusAllowedCanceling = [
+  ConfigStatusOrder.PENDING,
+  ConfigStatusOrder.APPROVED,
+];
+const statusAllowedCanceledOrRejected = [ConfigStatusOrder.CANCELING];
+
+module.exports = {
+  ConfigRank,
+  ConfigStatusOrder,
+  statusAllowedApprovedRejected,
+  statusAllowedCanceling,
+
+  statusAllowedCanceledOrRejected,
+};

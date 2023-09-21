@@ -187,6 +187,16 @@ const setDefaultBank = async (bank_id, user_id, isDefault) => {
   );
 };
 
+const updateStatistic = (user_id, total_order_item, total_price) =>
+  db.query(
+    `
+     REPLACE INTO statistic_user
+     (user_id,total_price_order,total_item_order)
+      VALUES(?,?,?)
+    `,
+    [user_id, total_price, total_order_item]
+  );
+
 module.exports = {
   checkExistingUser,
   create,
@@ -201,4 +211,5 @@ module.exports = {
   addBankUser,
   removeBank,
   setDefaultBank,
+  updateStatistic,
 };

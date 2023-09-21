@@ -72,4 +72,43 @@ const get = (user_id, { limit, order_by, sort_by, filter }) =>
     [user_id]
   );
 
-module.exports = { create, insertProduct, get };
+const changeStatus = (id, status_order) =>
+  db.query(`UPDATE orders SET status = ? WHERE id = ?`, [status_order, id]);
+
+const findOrder = async (id) => {
+  const res = await db.query(`SELECT * FROM orders WHERE id =?`, [id]);
+  return res[0];
+};
+
+const getStatisticOrder = (id) =>
+  db.query(
+    `
+    SELECT  (
+      SELECT SUM(P_1.price * O_I_1.qty)
+      from order_items as O_I_1 join products as P_1 on P_1.id = O_I_1.product_id
+      WHERE O_I_1.order_id = O.id
+      group by O_I_1.order_id
+
+      ) as total,
+      
+      (
+      SELECT SUM(O_I_1.qty)
+      from order_items as O_I_1 
+      WHERE O_I_1.order_id = O.id
+      group by O_I_1.order_id
+
+      ) as qty
+      from orders as O
+      WHERE O.id = ?
+    `,
+    [id]
+  );
+
+module.exports = {
+  create,
+  insertProduct,
+  get,
+  changeStatus,
+  findOrder,
+  getStatisticOrder,
+};
