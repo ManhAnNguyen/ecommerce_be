@@ -36,6 +36,7 @@ app.use("/product", require("./src/routes/product"));
 //jwt
 app.use(handleJWT);
 app.use("/address", require("./src/routes/address"));
+app.use("/order", require("./src/routes/order.js"));
 
 //handle error
 app.use(errorHandle);

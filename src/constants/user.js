@@ -1,14 +1,16 @@
-export const ConfigRank = {
+const ConfigRank = {
   BRONZE: "BRONZE",
   SILVER: "SILVER",
   GOLD: "GOLD",
   DIAMOND: "DIAMOND",
 };
 
-export const ConfigStatusOrder = {
+const ConfigStatusOrder = {
   PENDING: "PENDING",
   APPROVED: "APPROVED",
   REJECTED: "REJECTED",
   CANCELING: "CANCELING",
   CANCELED: "CANCELED",
 };
+
+module.exports = { ConfigRank, ConfigStatusOrder };
