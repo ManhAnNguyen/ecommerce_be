@@ -56,4 +56,68 @@ const checkExistingProduct = async (id) => {
   return result[0];
 };
 
-module.exports = { get, create, checkExistingProduct, update };
+const insertReviewProduct = async (data) => {
+  const filterData = Object.keys(data)
+    .filter((key) => !!data[key])
+    .reduce((result, key) => ({ ...result, [key]: data[key] }), {});
+  const keys = Object.keys(filterData);
+  const values = Object.values(filterData);
+  const questionMark = keys.reduce(
+    (result, key, index, arrayKeys) =>
+      result + `? ${index !== arrayKeys.length - 1 ? "," : ""}`,
+    ""
+  );
+
+  await db.query(
+    `INSERT INTO review_product (${keys.toString()}) VALUES(${questionMark})`,
+    [...values]
+  );
+};
+
+const updateReviewProduct = async (data, review_id) => {
+  const filterData = Object.keys(data)
+    .filter((key) => !!data[key])
+    .reduce((result, key) => ({ ...result, [key]: data[key] }), {});
+  const keys = Object.keys(filterData);
+  const values = Object.values(filterData);
+  const questionMark = keys.reduce(
+    (result, key, index, arrayKeys) =>
+      result + `${key} =? ${index !== arrayKeys.length - 1 ? "," : ""}`,
+    ""
+  );
+
+  await db.query(`UPDATE review_product SET ${questionMark} WHERE id = ?`, [
+    ...values,
+    review_id,
+  ]);
+};
+
+const deleteReview = (id) =>
+  db.query(`DELETE FROM review_product WHERE id = ?`, [id]);
+
+const getReview = (product_id, limit) =>
+  db.query(
+    `
+    SELECT R.id,R.image,R.comment,R.star,R.created_at,R.updated_at,
+    json_object(
+       'username',U.username,
+       'avatar',U.avatar
+    ) as creator  
+    FROM review_product as R 
+    join users as U on U.id = R.user_id
+    WHERE R.product_id = ?
+    LIMIT ${limit}
+    `,
+    [product_id]
+  );
+
+module.exports = {
+  get,
+  create,
+  checkExistingProduct,
+  update,
+  insertReviewProduct,
+  updateReviewProduct,
+  deleteReview,
+  getReview,
+};

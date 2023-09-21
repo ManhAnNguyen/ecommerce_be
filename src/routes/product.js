@@ -6,8 +6,22 @@ const handleRole = require("../middlewares/handleRole");
 const { upload } = require("../middlewares/handleUpload");
 
 router.get("/", productController.get);
+router.get("/review/:productId", productController.getReview);
 
-router.use(handleJWT, handleRole);
+router.use(handleJWT);
+router.post(
+  "/review",
+  upload("review").single("image"),
+  productController.createReview
+);
+router.patch(
+  "/review",
+  upload("review").single("image"),
+  productController.updateReview
+);
+
+router.delete("/review", productController.deleteProduct);
+router.use(handleRole);
 router.post("/", upload("products").single("image"), productController.create);
 router.post("/hidden", productController.hiddenProduct);
 
