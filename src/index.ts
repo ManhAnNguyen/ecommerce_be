@@ -7,6 +7,7 @@ import { PORT } from "./config/env";
 import cookieParser from "cookie-parser";
 import bodyParser from "body-parser";
 import { errorHandle } from "./middlewares/handleError";
+import routes from "./routes";
 
 const app = express();
 
@@ -19,6 +20,9 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 //serve static file
 app.use(express.static("public"));
+
+//routes
+app.use(routes);
 
 //handle err
 app.use(errorHandle);

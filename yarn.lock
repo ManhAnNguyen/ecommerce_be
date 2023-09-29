@@ -61,6 +61,13 @@
   resolved "https://registry.yarnpkg.com/@tsconfig/node16/-/node16-1.0.4.tgz#0b92dcc0cc1c81f6f306a381f28e31b1a56536e9"
   integrity sha512-vxhUy4J8lyeyinH7Azl1pdd43GJhZH/tP2weN8TntQblOY+A0XbT8DJk1/oCPuOOyg/Ja757rG0CgHcWC8OfMA==
 
+"@types/bcrypt@^5.0.0":
+  version "5.0.0"
+  resolved "https://registry.yarnpkg.com/@types/bcrypt/-/bcrypt-5.0.0.tgz#a835afa2882d165aff5690893db314eaa98b9f20"
+  integrity sha512-agtcFKaruL8TmcvqbndlqHPSJgsolhf/qPWchFlgnW1gECTN/nKbFcoFnvKAQRFfKbh+BO6A3SWdJu9t+xF3Lw==
+  dependencies:
+    "@types/node" "*"
+
 "@types/body-parser@*":
   version "1.19.3"
   resolved "https://registry.yarnpkg.com/@types/body-parser/-/body-parser-1.19.3.tgz#fb558014374f7d9e56c8f34bab2042a3a07d25cd"
@@ -108,6 +115,13 @@
   resolved "https://registry.yarnpkg.com/@types/http-errors/-/http-errors-2.0.2.tgz#a86e00bbde8950364f8e7846687259ffcd96e8c2"
   integrity sha512-lPG6KlZs88gef6aD85z3HNkztpj7w2R7HmR3gygjfXCQmsLloWNARFkMuzKiiY8FGdh1XDpgBdrSf4aKDiA7Kg==
 
+"@types/jsonwebtoken@^9.0.3":
+  version "9.0.3"
+  resolved "https://registry.yarnpkg.com/@types/jsonwebtoken/-/jsonwebtoken-9.0.3.tgz#1f22283b8e1f933af9e195d720798b64b399d84c"
+  integrity sha512-b0jGiOgHtZ2jqdPgPnP6WLCXZk1T8p06A/vPGzUvxpFGgKMbjXJDjC5m52ErqBnIuWZFgGoIJyRdeG5AyreJjA==
+  dependencies:
+    "@types/node" "*"
+
 "@types/mime@*":
   version "3.0.2"
   resolved "https://registry.yarnpkg.com/@types/mime/-/mime-3.0.2.tgz#c1ae807f13d308ee7511a5b81c74f327028e66e8"
@@ -154,6 +168,11 @@
     "@types/http-errors" "*"
     "@types/mime" "*"
     "@types/node" "*"
+
+"@types/validator@^13.7.10":
+  version "13.11.2"
+  resolved "https://registry.yarnpkg.com/@types/validator/-/validator-13.11.2.tgz#a2502325a3c0bd29f36dbac3b763223edd801e17"
+  integrity sha512-nIKVVQKT6kGKysnNt+xLobr+pFJNssJRi2s034wgWeFBUx01fI8BeHTW2TcRp7VcFu9QCYG8IlChTuovcm0oKQ==
 
 abbrev@1:
   version "1.1.1"
@@ -394,6 +413,15 @@ chownr@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/chownr/-/chownr-2.0.0.tgz#15bfbe53d2eab4cf70f18a8cd68ebe5b3cb1dece"
   integrity sha512-bIomtDF5KGpdogkLd9VspvFzk9KfpyyGlS8YFVZl7TGPBHL5snIOnxeshwVgPteQ9b4Eydl+pVbIyE1DcvCWgQ==
+
+class-validator@^0.14.0:
+  version "0.14.0"
+  resolved "https://registry.yarnpkg.com/class-validator/-/class-validator-0.14.0.tgz#40ed0ecf3c83b2a8a6a320f4edb607be0f0df159"
+  integrity sha512-ct3ltplN8I9fOwUd8GrP8UQixwff129BkEtuWDKL5W45cQuLd19xqmTLu5ge78YDm/fdje6FMt0hGOhl0lii3A==
+  dependencies:
+    "@types/validator" "^13.7.10"
+    libphonenumber-js "^1.10.14"
+    validator "^13.7.0"
 
 cli-highlight@^2.1.11:
   version "2.1.11"
@@ -913,6 +941,11 @@ jws@^3.2.2:
   dependencies:
     jwa "^1.4.1"
     safe-buffer "^5.0.1"
+
+libphonenumber-js@^1.10.14:
+  version "1.10.45"
+  resolved "https://registry.yarnpkg.com/libphonenumber-js/-/libphonenumber-js-1.10.45.tgz#cbaebe6bfae746dbfb42730cd043fcb8c472ca00"
+  integrity sha512-eeHcvGafEYCaKB4fo2uBINfG7j7PcGwBHUaTVfbwl/6KcjCgIKNlIOsSXVRp9BH10NQwmvvk+nQ1e/Yp4BGB7w==
 
 lodash.includes@^4.3.0:
   version "4.3.0"
@@ -1641,6 +1674,11 @@ v8-compile-cache-lib@^3.0.0:
   version "3.0.1"
   resolved "https://registry.yarnpkg.com/v8-compile-cache-lib/-/v8-compile-cache-lib-3.0.1.tgz#6336e8d71965cb3d35a1bbb7868445a7c05264bf"
   integrity sha512-wa7YjyUGfNZngI/vtK0UHAN+lgDCxBPCylVXGp0zu59Fz5aiGtNXaq3DhIov063MorB+VfufLh3JlF2KdTK3xg==
+
+validator@^13.7.0:
+  version "13.11.0"
+  resolved "https://registry.yarnpkg.com/validator/-/validator-13.11.0.tgz#23ab3fd59290c61248364eabf4067f04955fbb1b"
+  integrity sha512-Ii+sehpSfZy+At5nPdnyMhx78fEoPDkR2XW/zimHEL3MyGJQOCQ7WeP20jPYRz7ZCpcKLB21NxuXHF3bxjStBQ==
 
 vary@~1.1.2:
   version "1.1.2"
