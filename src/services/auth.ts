@@ -109,4 +109,21 @@ export class UserService {
     user.refreshToken = null;
     await userRepository.save(user);
   }
+  //change password
+  async changePassword(
+    currentPassword: string,
+    newPassword: string,
+    user_id: string
+  ) {
+    if (!currentPassword || !newPassword)
+      throw new AppError("currentPassword and newPassword are required", 400);
+    const user = await userRepository.findOneBy({ id: user_id });
+    const comparePwd = bcrypt.compareSync(currentPassword, user.password);
+    if (!comparePwd) throw new AppError("Current password is not correct", 400);
+
+    const hashedPwd = bcrypt.hashSync(newPassword, HASH_PWD);
+
+    user.password = hashedPwd;
+    await userRepository.save(user);
+  }
 }

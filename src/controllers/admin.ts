@@ -9,4 +9,11 @@ const login = async (req: Request, res: Response) => {
   res.status(200).json(accessToken);
 };
 
-export { login };
+const lockedUser = async (req: Request, res: Response) => {
+  const { id, locked } = req.body;
+
+  await adminService.lockedUser(id, locked);
+  res.sendStatus(200);
+};
+
+export { login, lockedUser };

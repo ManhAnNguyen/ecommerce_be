@@ -1,6 +1,6 @@
 import { ACCESS_TOKEN } from "../config/env";
 import AppError from "../errors/AppError";
-import { adminRepository } from "../repositories";
+import { adminRepository, userRepository } from "../repositories";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
@@ -28,6 +28,15 @@ class AdminService {
     });
 
     return accessToken;
+  }
+  //locked user
+  async lockedUser(id: string, locked: boolean) {
+    if (!id) throw new AppError("id must be required", 400);
+    const user = await userRepository.findOneBy({ id });
+    if (!user) throw new AppError("user not found", 400);
+
+    user.locked = locked;
+    await userRepository.save(user);
   }
 }
 

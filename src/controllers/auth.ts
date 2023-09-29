@@ -35,6 +35,20 @@ const logout = async (req: Request, res: Response) => {
   res.sendStatus(200);
 };
 
-const changePassword = async (req: Request, res: Response) => {};
+const changePassword = async (
+  req: Request & {
+    user: Record<string, unknown>;
+  },
+  res: Response
+) => {
+  const { currentPassword, newPassword } = req.body;
+  const { user_id } = req.user;
+  await userService.changePassword(
+    currentPassword,
+    newPassword,
+    user_id as string
+  );
+  res.sendStatus(200);
+};
 
 export { register, login, refreshToken, logout, changePassword };
