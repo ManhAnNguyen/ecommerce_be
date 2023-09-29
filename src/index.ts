@@ -1,23 +1,30 @@
-require("dotenv").config();
+import "dotenv/config";
+import "express-async-errors";
+
 import { AppDataSource } from "./data-source";
-import { User } from "./entity/User";
+import express from "express";
+import { PORT } from "./config/env";
+import cookieParser from "cookie-parser";
+import bodyParser from "body-parser";
+import { errorHandle } from "./middlewares/handleError";
+
+const app = express();
+
+//serve cookie
+app.use(cookieParser());
+// parse application/json
+app.use(bodyParser.json());
+// parse application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded({ extended: true }));
+
+//serve static file
+app.use(express.static("public"));
+
+//handle err
+app.use(errorHandle);
 
 AppDataSource.initialize()
   .then(async () => {
-    console.log("Inserting a new user into the database...");
-    const user = new User();
-    user.firstName = "Timber";
-    user.lastName = "Saw";
-    user.age = 25;
-    await AppDataSource.manager.save(user);
-    console.log("Saved a new user with id: " + user.id);
-
-    console.log("Loading users from the database...");
-    const users = await AppDataSource.manager.find(User);
-    console.log("Loaded users: ", users);
-
-    console.log(
-      "Here you can setup and run express / fastify / any other framework."
-    );
+    app.listen(PORT, () => console.log(`server up in ${PORT}`));
   })
   .catch((error) => console.log(error));
