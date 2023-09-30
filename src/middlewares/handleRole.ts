@@ -10,6 +10,7 @@ const handleRole = async (
   next: NextFunction
 ) => {
   const admin = req.admin;
+
   if (!admin) throw new AppError("no permission", 403);
 
   const { admin_id } = req.admin;

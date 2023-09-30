@@ -3,11 +3,14 @@ import "express-async-errors";
 
 import { AppDataSource } from "./data-source";
 import express from "express";
-import { PORT } from "./config/env";
+import { HASH_PWD, PORT } from "./config/env";
 import cookieParser from "cookie-parser";
 import bodyParser from "body-parser";
 import { errorHandle } from "./middlewares/handleError";
 import routes from "./routes";
+import { Admin } from "./entity/Admin";
+import { adminRepository } from "./repositories";
+import bcrypt from "bcrypt";
 
 const app = express();
 

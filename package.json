@@ -33,7 +33,7 @@
       "typeorm": "typeorm-ts-node-commonjs",
       "dev": "nodemon --watch *.ts --exec ts-node src/index.ts",
       "migration:create": "typeorm migration:create",
-      "migration:run": "npx typeorm-ts-node-commonjs migration:run  -d src/data-source",
+      "migration:run": "npx typeorm-ts-node-commonjs migration:run   -d src/data-source",
       "migration:revert": "npx typeorm-ts-node-commonjs migration:revert  -d src/data-source",
       "migration:generate": "npx typeorm-ts-node-commonjs migration:generate"
    }
