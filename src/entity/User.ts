@@ -2,9 +2,14 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  OneToMany,
+  OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from "typeorm";
+import UserAddress from "./UserAddress";
+import StatisticUser from "./StatisticUser";
+import UserBank from "./UserBank";
 
 @Entity("users")
 export class User {
@@ -30,6 +35,20 @@ export class User {
   locked: boolean;
   @Column({ nullable: true })
   refreshToken: string;
+
   @Column({ nullable: true })
   avatar: string;
+
+  //address
+  @OneToMany(() => UserAddress, (userAddress) => userAddress.user)
+  userAddress: UserAddress[];
+
+  //statistic
+
+  @OneToOne(() => StatisticUser, (statistic) => statistic.user_id)
+  statisticUser: StatisticUser;
+
+  //bank
+  @OneToMany(() => UserBank, (userBank) => userBank.user)
+  userBanks: UserBank[];
 }
