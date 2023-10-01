@@ -7,7 +7,7 @@ class Commune {
   name: string;
   @PrimaryColumn()
   code: string;
-  @ManyToOne(() => District, (district) => district.communes, {
+  @ManyToOne(() => District, {
     onDelete: "CASCADE",
     onUpdate: "CASCADE",
     nullable: false,

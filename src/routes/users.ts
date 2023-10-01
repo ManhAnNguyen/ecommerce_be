@@ -1,10 +1,12 @@
-import { Router } from "express";
+import { Request, Response, Router } from "express";
 import handleRole from "../middlewares/handleRole";
 import handleJwt from "../middlewares/handleJWT";
 import { getDetailUser, getAllUser } from "../controllers/users";
+import { AppDataSource } from "../data-source";
+import StatisticUser from "../entity/StatisticUser";
+import { userRepository } from "../repositories";
 
 const router = Router();
-router.get("/detail/:id", getDetailUser);
 
 router.use(handleJwt);
 // router.get("/me", getMe);

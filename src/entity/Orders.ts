@@ -27,7 +27,7 @@ class Orders {
   status: EConfigStatusOrder;
 
   //ref : user
-  @ManyToOne(() => User, (user) => user.id, {
+  @ManyToOne(() => User, {
     nullable: false,
     onDelete: "CASCADE",
     onUpdate: "CASCADE",
@@ -39,7 +39,7 @@ class Orders {
   user: User;
 
   //ref :payment method
-  @ManyToOne(() => PaymentMethod, (payment) => payment.id, {
+  @ManyToOne(() => PaymentMethod, {
     nullable: false,
     onDelete: "CASCADE",
     onUpdate: "CASCADE",
@@ -51,7 +51,7 @@ class Orders {
   paymentMethod: PaymentMethod;
 
   //ref : address
-  @ManyToOne(() => UserAddress, (userAddrss) => userAddrss.id, {
+  @ManyToOne(() => UserAddress, {
     nullable: false,
     onDelete: "CASCADE",
     onUpdate: "CASCADE",

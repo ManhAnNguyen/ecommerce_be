@@ -35,7 +35,9 @@ class Products {
     nullable: true,
   })
   description: string;
-  @ManyToOne(() => Category, (category) => category.id, {
+
+  //ref : category
+  @ManyToOne(() => Category, {
     nullable: false,
     onDelete: "CASCADE",
     onUpdate: "CASCADE",

@@ -21,7 +21,7 @@ class UserAddress {
   @Column()
   isDefault: boolean;
   //user
-  @ManyToOne(() => User, (user) => user.id, {
+  @ManyToOne(() => User, {
     onDelete: "CASCADE",
     onUpdate: "CASCADE",
   })
@@ -32,23 +32,35 @@ class UserAddress {
   user: User;
 
   //commune
-  @ManyToOne(() => Commune, (commune) => commune.code, {
+  @ManyToOne(() => Commune, {
     onDelete: "CASCADE",
     onUpdate: "CASCADE",
+  })
+  @JoinColumn({
+    name: "communeCode",
+    referencedColumnName: "code",
   })
   commune: Commune;
 
   //district
-  @ManyToOne(() => District, (district) => district.code, {
+  @ManyToOne(() => District, {
     onDelete: "CASCADE",
     onUpdate: "CASCADE",
+  })
+  @JoinColumn({
+    name: "districtCode",
+    referencedColumnName: "code",
   })
   district: District;
 
   //province
-  @ManyToOne(() => Province, (province) => province.code, {
+  @ManyToOne(() => Province, {
     onDelete: "CASCADE",
     onUpdate: "CASCADE",
+  })
+  @JoinColumn({
+    name: "provinceCode",
+    referencedColumnName: "code",
   })
   province: Province;
 }

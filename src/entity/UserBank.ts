@@ -15,7 +15,7 @@ class UserBank {
   isDefault: boolean;
 
   //user
-  @ManyToOne(() => User, (user) => user.id, {
+  @ManyToOne(() => User, {
     nullable: false,
     onDelete: "CASCADE",
     onUpdate: "CASCADE",
@@ -27,7 +27,7 @@ class UserBank {
   user: User;
 
   //bank
-  @ManyToOne(() => Banks, (bank) => bank.id, {
+  @ManyToOne(() => Banks, {
     nullable: false,
     onDelete: "CASCADE",
     onUpdate: "CASCADE",

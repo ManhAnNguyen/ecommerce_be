@@ -45,7 +45,7 @@ export class User {
 
   //statistic
 
-  @OneToOne(() => StatisticUser, (statistic) => statistic.user_id)
+  @OneToOne(() => StatisticUser, (statistic) => statistic.user)
   statisticUser: StatisticUser;
 
   //bank

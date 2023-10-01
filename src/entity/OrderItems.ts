@@ -18,7 +18,7 @@ class OrderItems {
   @Column()
   quantity: number;
   //ref : order
-  @ManyToOne(() => Orders, (order) => order.id, {
+  @ManyToOne(() => Orders, {
     nullable: false,
     onDelete: "CASCADE",
     onUpdate: "CASCADE",
@@ -30,7 +30,7 @@ class OrderItems {
   order: Orders;
 
   //ref : products
-  @ManyToOne(() => Products, (product) => product.id, {
+  @ManyToOne(() => Products, {
     nullable: false,
     onDelete: "CASCADE",
     onUpdate: "CASCADE",

@@ -32,7 +32,7 @@ class ReviewProduct {
   updated_at: string;
 
   //user
-  @ManyToOne(() => User, (user) => user.id, {
+  @ManyToOne(() => User, {
     nullable: false,
     onDelete: "CASCADE",
     onUpdate: "CASCADE",
@@ -44,7 +44,7 @@ class ReviewProduct {
   user: User;
 
   //product
-  @ManyToOne(() => Products, (product) => product.id, {
+  @ManyToOne(() => Products, {
     onDelete: "CASCADE",
     onUpdate: "CASCADE",
     nullable: false,

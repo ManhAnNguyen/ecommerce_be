@@ -17,7 +17,7 @@ class District {
   name: string;
 
   //join province;
-  @ManyToOne(() => Province, (province) => province.districts, {
+  @ManyToOne(() => Province, {
     onDelete: "CASCADE",
     onUpdate: "CASCADE",
     nullable: false,

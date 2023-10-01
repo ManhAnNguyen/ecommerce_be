@@ -16,4 +16,10 @@ const lockedUser = async (req: Request, res: Response) => {
   res.sendStatus(200);
 };
 
-export { login, lockedUser };
+const create = async (req: Request, res: Response) => {
+  const { username, password } = req.body;
+  await adminService.create(username, password);
+  res.sendStatus(201);
+};
+
+export { login, lockedUser, create };

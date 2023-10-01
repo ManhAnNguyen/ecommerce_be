@@ -10,7 +10,7 @@ class StatisticUser {
   @Column()
   total_price: number;
 
-  @OneToOne(() => User, (user) => user.id, {
+  @OneToOne(() => User, {
     nullable: false,
     onDelete: "CASCADE",
     onUpdate: "CASCADE",

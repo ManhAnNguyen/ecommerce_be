@@ -1,4 +1,5 @@
-import { ACCESS_TOKEN } from "../config/env";
+import { ACCESS_TOKEN, HASH_PWD } from "../config/env";
+import { Admin } from "../entity/Admin";
 import AppError from "../errors/AppError";
 import { adminRepository, userRepository } from "../repositories";
 import bcrypt from "bcrypt";
@@ -37,6 +38,20 @@ class AdminService {
 
     user.locked = locked;
     await userRepository.save(user);
+  }
+
+  //create
+  async create(username: string, password: string) {
+    if (!username || !password) {
+      throw new AppError("username and password are required", 400);
+    }
+    const admin = new Admin();
+    const hashedPwd = bcrypt.hashSync(password, HASH_PWD);
+
+    admin.password = hashedPwd;
+    admin.username = username;
+
+    await adminRepository.save(admin);
   }
 }
 
