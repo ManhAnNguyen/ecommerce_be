@@ -14,7 +14,9 @@ import Province from "./Province";
 class UserAddress {
   @PrimaryGeneratedColumn("increment")
   id: string | number;
-  @Column()
+  @Column({
+    nullable: true,
+  })
   specific: string;
   @Column()
   isDefault: boolean;

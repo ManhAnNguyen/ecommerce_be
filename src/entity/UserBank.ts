@@ -8,7 +8,10 @@ class UserBank {
   user_id: string | number;
   @PrimaryColumn()
   bank_id: string | number;
-  @Column()
+  @Column({
+    nullable: true,
+    default: false,
+  })
   isDefault: boolean;
 
   //user

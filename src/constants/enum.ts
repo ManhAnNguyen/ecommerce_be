@@ -1,0 +1,16 @@
+export const enum EConfigRank {
+  BRONZE = "BRONZE",
+  SILVER = "SILVER",
+  GOLD = "GOLD",
+  DIAMOND = "DIAMOND",
+}
+
+export const enum EConfigStatusOrder {
+  PENDING = "PENDING",
+  APPROVED = "APPROVED",
+  REJECTED = "REJECTED",
+  CANCELING = "CANCELING",
+  CANCELED = "CANCELED",
+  REJECTED_CANCEL = "REJECTED_CANCEL",
+  SHIPPED = "SHIPPED",
+}
