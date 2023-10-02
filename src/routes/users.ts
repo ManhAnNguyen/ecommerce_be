@@ -13,6 +13,11 @@ import {
   setDefaultAddress,
   updateUser,
 } from "../controllers/users";
+import {
+  addBankUser,
+  removeBankUser,
+  setDefaultBank,
+} from "../controllers/banks";
 
 const router = Router();
 
@@ -38,9 +43,9 @@ router.post("/address", createAddress);
 router.post("/address/:id", updateAddress);
 router.delete("/address/:id", deleteAddress);
 router.patch("/address/set-default/:id", setDefaultAddress);
-// router.post("/bank", addBankUser);
-// router.delete("/bank", removeBankUser);
-// router.post("/bank/set-default", setDefaultBank);
+router.post("/bank", addBankUser);
+router.delete("/bank", removeBankUser);
+router.post("/bank/set-default", setDefaultBank);
 
 router.use(handleRole);
 router.get("/get-all", getAllUser);
