@@ -8,9 +8,6 @@ import cookieParser from "cookie-parser";
 import bodyParser from "body-parser";
 import { errorHandle } from "./middlewares/handleError";
 import routes from "./routes";
-import { Admin } from "./entity/Admin";
-import { adminRepository } from "./repositories";
-import bcrypt from "bcrypt";
 
 const app = express();
 

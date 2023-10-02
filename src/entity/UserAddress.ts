@@ -1,9 +1,11 @@
 import {
   Column,
+  CreateDateColumn,
   Entity,
   JoinColumn,
   ManyToOne,
   PrimaryGeneratedColumn,
+  UpdateDateColumn,
 } from "typeorm";
 import { User } from "./User";
 import Commune from "./Commune";
@@ -18,8 +20,16 @@ class UserAddress {
     nullable: true,
   })
   specific: string;
-  @Column()
+  @Column({
+    default: false,
+    nullable: true,
+  })
   isDefault: boolean;
+  @CreateDateColumn()
+  created_at: string;
+  @UpdateDateColumn()
+  updated_at: string;
+
   //user
   @ManyToOne(() => User, {
     onDelete: "CASCADE",

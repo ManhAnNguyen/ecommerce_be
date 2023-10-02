@@ -1,15 +1,22 @@
-import { Request, Response, Router } from "express";
+import { Router } from "express";
 import handleRole from "../middlewares/handleRole";
 import handleJwt from "../middlewares/handleJWT";
-import { getDetailUser, getAllUser } from "../controllers/users";
-import { AppDataSource } from "../data-source";
-import StatisticUser from "../entity/StatisticUser";
-import { userRepository } from "../repositories";
+import {
+  getDetailUser,
+  getAllUser,
+  getMe,
+  createAddress,
+  updateAddress,
+  deleteAddress,
+  setDefaultAddress,
+} from "../controllers/users";
 
 const router = Router();
 
+router.get("/detail/:id", getDetailUser);
+
 router.use(handleJwt);
-// router.get("/me", getMe);
+router.get("/me", getMe);
 // router.post(
 //   "/update",
 
@@ -25,10 +32,10 @@ router.use(handleJwt);
 //   ]),
 //   updateUser
 // );
-// router.post("/address", createAddress);
-// router.post("/address/:id", updateAddress);
-// router.delete("/address/:id", deleteAddress);
-// router.patch("/address/set-default", setDefaultAddress);
+router.post("/address", createAddress);
+router.post("/address/:id", updateAddress);
+router.delete("/address/:id", deleteAddress);
+router.patch("/address/set-default/:id", setDefaultAddress);
 // router.post("/bank", addBankUser);
 // router.delete("/bank", removeBankUser);
 // router.post("/bank/set-default", setDefaultBank);
