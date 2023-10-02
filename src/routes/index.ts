@@ -4,6 +4,7 @@ import adminRoutes from "./admin";
 import addressRoutes from "./address";
 import userRoutes from "./users";
 import bankRoutes from "./banks";
+import categoryRoutes from "./category";
 
 const router = Router();
 
@@ -12,5 +13,6 @@ router.use("/admin", adminRoutes);
 router.use("/address", addressRoutes);
 router.use("/user", userRoutes);
 router.use("/bank", bankRoutes);
+router.use("/category", categoryRoutes);
 
 export default router;
