@@ -1,4 +1,5 @@
 import { AppDataSource } from "../data-source";
+import { User } from "../entity/User";
 import UserAddress from "../entity/UserAddress";
 import AppError from "../errors/AppError";
 import {
@@ -46,6 +47,18 @@ class UserService {
     if (!userAddress) throw new AppError("address not found", 404);
 
     return userAddress;
+  }
+
+  async updateUser(data: Record<string, unknown>, user_id: string | number) {
+    const user = await userRepository.findOneBy({ id: user_id });
+
+    for (let key in data) {
+      if (!!data[key]) {
+        user[key] = data[key];
+      }
+    }
+
+    await userRepository.save(user);
   }
 
   async getDetailUser(id: string | number) {

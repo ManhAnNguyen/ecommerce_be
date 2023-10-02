@@ -11,6 +11,21 @@ const getDetailUser = async (req: Request, res: Response) => {
   res.status(200).json(result);
 };
 
+const updateUser = async (
+  req: Request & {
+    user: Record<string, unknown>;
+  },
+  res: Response
+) => {
+  const file = req.file;
+  const avatar = file && `/${file.fieldname}/${file.filename}`;
+  const { user_id } = req.user;
+  const { username, email, phone, gender, birthday } = req.body;
+  const data = { username, email, phone, gender, birthday, avatar };
+  await userService.updateUser(data, user_id as string);
+  res.sendStatus(200);
+};
+
 const getAllUser = async (req: Request, res: Response) => {
   const result = await userService.getAllUser();
 
@@ -76,4 +91,5 @@ export {
   updateAddress,
   deleteAddress,
   setDefaultAddress,
+  updateUser,
 };

@@ -1,6 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-
-const AppError = require("../errors/AppError");
+import AppError from "../errors/AppError";
 
 const handleCheckbody =
   (notAllowedList: string[]) =>
@@ -14,4 +13,4 @@ const handleCheckbody =
     next();
   };
 
-module.exports = handleCheckbody;
+export default handleCheckbody;
