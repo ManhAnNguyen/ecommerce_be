@@ -24,7 +24,9 @@ class Products {
   updated_at: string;
   @Column()
   image: string;
-  @Column()
+  @Column({
+    nullable: true,
+  })
   quantity: number;
   @Column({
     default: false,

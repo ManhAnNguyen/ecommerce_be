@@ -14,3 +14,13 @@ export const enum EConfigStatusOrder {
   REJECTED_CANCEL = "REJECTED_CANCEL",
   SHIPPED = "SHIPPED",
 }
+
+export const enum EDefaultPagination {
+  PAGE = 1,
+  TAKE = 10,
+}
+
+export const enum EDefaultSort {
+  SORT_BY = "created_at",
+  ORDER_BY = "ASC",
+}
