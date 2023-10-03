@@ -54,4 +54,74 @@ const hiddenProduct = async (req: Request, res: Response) => {
   await productService.hiddenProduct(id, hidden);
   res.sendStatus(200);
 };
-export { get, create, update, hiddenProduct };
+
+const getReview = async (req: Request, res: Response) => {
+  const data = await productService.getReview(req.params.productId);
+  res.status(200).json(data);
+};
+
+const createReview = async (
+  req: Request & {
+    user: Record<string, unknown>;
+  },
+  res: Response
+) => {
+  const { user_id } = req.user;
+  const { productId } = req.params;
+  const image = req.file;
+  const imageDestination = image?.destination?.split?.("/");
+  const fileName =
+    imageDestination &&
+    `/${imageDestination[imageDestination.length - 1]}/${image.filename}`;
+
+  await productService.createReview(productId, user_id as string, {
+    ...req.body,
+    image: fileName,
+  });
+
+  res.sendStatus(201);
+};
+
+const updateReview = async (
+  req: Request & {
+    user: Record<string, unknown>;
+  },
+  res: Response
+) => {
+  const { reviewId } = req.params;
+  const { user_id } = req.user;
+  const image = req.file;
+  const imageDestination = image?.destination?.split?.("/");
+  const fileName =
+    imageDestination &&
+    `/${imageDestination[imageDestination.length - 1]}/${image.filename}`;
+
+  await productService.updateReview(reviewId, user_id as string, {
+    ...req.body,
+    image: fileName,
+  });
+  res.sendStatus(200);
+};
+
+const deleteReview = async (
+  req: Request & {
+    user: Record<string, unknown>;
+  },
+  res: Response
+) => {
+  const { reviewId } = req.params;
+  const { user_id } = req.user;
+  await productService.deleteReview(reviewId, user_id as string);
+  res.sendStatus(200);
+};
+
+export {
+  get,
+  create,
+  update,
+  hiddenProduct,
+  getReview,
+  createReview,
+  updateReview,
+  deleteReview,
+};

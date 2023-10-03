@@ -18,9 +18,7 @@ class ReviewProduct {
     nullable: true,
   })
   image: string;
-  @Column({
-    nullable: true,
-  })
+  @Column()
   comment: string;
   @Column({
     nullable: true,

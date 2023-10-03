@@ -1,9 +1,16 @@
 import { Between, LessThanOrEqual, Like, MoreThanOrEqual } from "typeorm";
-import { EDefaultPagination } from "../constants/enum";
+import { EConfigStatusOrder, EDefaultPagination } from "../constants/enum";
 import Products from "../entity/Product";
 import AppError from "../errors/AppError";
 import Pagination from "../instance/Pagination";
-import { categoryRepository, productRepository } from "../repositories";
+import {
+  categoryRepository,
+  orderItemsRepository,
+  productRepository,
+  reviewProductRepository,
+  userRepository,
+} from "../repositories";
+import ReviewProduct from "../entity/ReviewProduct";
 
 class ProductService {
   //check existing product
@@ -12,6 +19,29 @@ class ProductService {
     if (!product) throw new AppError("product not found", 404);
     return product;
   }
+
+  //check comment
+  private async checkOwnerComment(
+    reviewId: string | number,
+    user_id: string | number
+  ) {
+    const review = await reviewProductRepository.findOneBy({ id: reviewId });
+    if (!review) throw new AppError("review not found", 404);
+
+    const isUserReviewed = await reviewProductRepository.exist({
+      where: {
+        id: review.id,
+        user: {
+          id: user_id,
+        },
+      },
+    });
+
+    if (!isUserReviewed) throw new AppError("not permission", 403);
+
+    return review;
+  }
+
   //get
   async get(
     meta: { take: number; page: number },
@@ -116,6 +146,97 @@ class ProductService {
     const product = await this.checkExistingProduct(id);
     product.hidden = hidden;
     await productRepository.save(product);
+  }
+
+  //get review
+  async getReview(id: string | number) {
+    const product = await this.checkExistingProduct(id);
+    const [docs, total] = await reviewProductRepository.findAndCount({
+      where: {
+        product: {
+          id: product.id,
+        },
+      },
+      select: {
+        user: {
+          id: true,
+          username: true,
+          avatar: true,
+        },
+      },
+      relations: {
+        user: true,
+      },
+    });
+
+    return {
+      docs,
+      total,
+    };
+  }
+
+  //create review
+  async createReview(
+    productId: string | number,
+    user_id: string | number,
+    data: Record<string, unknown>
+  ) {
+    const product = await this.checkExistingProduct(productId);
+    const user = await userRepository.findOneBy({ id: user_id });
+
+    if (!data["comment"]) throw new AppError("comment is required", 400);
+    const isBought = await orderItemsRepository.exist({
+      where: {
+        product: {
+          id: product.id,
+        },
+        order: {
+          status: EConfigStatusOrder.SHIPPED,
+          user: {
+            id: user.id,
+          },
+        },
+      },
+    });
+
+    if (!isBought) throw new AppError("not havenot bought product", 403);
+
+    const reviewProduct = new ReviewProduct();
+    reviewProduct.product = product;
+    reviewProduct.user = user;
+
+    for (let key in data) {
+      if (!!data[key]) {
+        reviewProduct[key] = data[key];
+      }
+    }
+
+    await reviewProductRepository.save(reviewProduct);
+  }
+
+  //update review
+  async updateReview(
+    reviewId: string | number,
+    user_id: string | number,
+    data: Record<string, unknown>
+  ) {
+    const review = await this.checkOwnerComment(reviewId, user_id);
+
+    for (let key in data) {
+      if (!!data[key]) {
+        review[key] = data[key];
+      }
+    }
+
+    await reviewProductRepository.save(review);
+  }
+
+  //delete review
+  async deleteReview(reviewId: string | number, user_id: string | number) {
+    const review = await this.checkOwnerComment(reviewId, user_id);
+    await reviewProductRepository.delete({
+      id: review.id,
+    });
   }
 }
 

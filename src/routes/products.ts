@@ -1,5 +1,14 @@
 import { Router } from "express";
-import { get, create, update, hiddenProduct } from "../controllers/products";
+import {
+  get,
+  create,
+  update,
+  hiddenProduct,
+  getReview,
+  createReview,
+  updateReview,
+  deleteReview,
+} from "../controllers/products";
 import handleJwt from "../middlewares/handleJWT";
 import handleRole from "../middlewares/handleRole";
 import upload from "../middlewares/handleUpload";
@@ -8,21 +17,21 @@ import handleCheckbody from "../middlewares/handleCheckbody";
 const router = Router();
 
 router.get("/", get);
-// router.get("/review/:productId", getReview);
+router.get("/review/:productId", getReview);
 
 router.use(handleJwt);
-// router.post(
-//   "/review",
-//   upload("review").single("image"),
-//   createReview
-// );
-// router.patch(
-//   "/review",
-//   upload("review").single("image"),
-//   updateReview
-// );
+router.post(
+  "/review/:productId",
+  upload("review").single("image"),
+  createReview
+);
+router.patch(
+  "/review/:reviewId",
+  upload("review").single("image"),
+  updateReview
+);
 
-// router.delete("/review", deleteProduct);
+router.delete("/review/:reviewId", deleteReview);
 router.use(handleRole);
 router.post("/", upload("products").single("image"), create);
 router.post("/hidden", hiddenProduct);
