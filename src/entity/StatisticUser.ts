@@ -4,7 +4,7 @@ import { User } from "./User";
 @Entity("statisticUser")
 class StatisticUser {
   @PrimaryColumn()
-  user_id: string;
+  user_id: string | number;
   @Column()
   total_item_order: number;
   @Column()

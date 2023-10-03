@@ -12,6 +12,7 @@ import { EConfigStatusOrder } from "../constants/enum";
 import { User } from "./User";
 import PaymentMethod from "./PaymentMethod";
 import UserAddress from "./UserAddress";
+import OrderItems from "./OrderItems";
 
 @Entity("orders")
 class Orders {
@@ -61,6 +62,10 @@ class Orders {
     referencedColumnName: "id",
   })
   address: UserAddress;
+
+  //ref : Product
+  @OneToMany(() => OrderItems, (orderItem) => orderItem.order)
+  products: OrderItems;
 }
 
 export default Orders;

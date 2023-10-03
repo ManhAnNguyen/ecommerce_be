@@ -1,18 +1,18 @@
 import { Request, Response } from "express";
-import { UserService } from "../services/auth";
+import { AuthService } from "../services/auth";
 import moment from "moment";
 
-const userService = new UserService();
+const authService = new AuthService();
 
 const register = async (req: Request, res: Response) => {
   const { username, password } = req.body;
-  await userService.register(username, password);
+  await authService.register(username, password);
   res.sendStatus(200);
 };
 
 const login = async (req: Request, res: Response) => {
   const { username, password } = req.body;
-  const { refreshToken, accessToken } = await userService.login(
+  const { refreshToken, accessToken } = await authService.login(
     username,
     password
   );
@@ -25,12 +25,12 @@ const login = async (req: Request, res: Response) => {
 };
 
 const refreshToken = async (req: Request, res: Response) => {
-  const accessToken = await userService.refreshToken(req);
+  const accessToken = await authService.refreshToken(req);
   res.status(200).json(accessToken);
 };
 
 const logout = async (req: Request, res: Response) => {
-  await userService.logout(req, res);
+  await authService.logout(req, res);
   res.clearCookie("refreshToken");
   res.sendStatus(200);
 };
@@ -43,7 +43,7 @@ const changePassword = async (
 ) => {
   const { currentPassword, newPassword } = req.body;
   const { user_id } = req.user;
-  await userService.changePassword(
+  await authService.changePassword(
     currentPassword,
     newPassword,
     user_id as string

@@ -41,7 +41,7 @@ class UserService {
     return { province, district, commune };
   }
   //check existing address
-  private async checkExistingAddress(id: string | number) {
+  async checkExistingUserAddress(id: string | number) {
     const userAddress = await userAddressRepository.findOneBy({ id });
 
     if (!userAddress) throw new AppError("address not found", 404);
@@ -151,7 +151,7 @@ class UserService {
     provinceCode: string,
     communeCode: string
   ) {
-    const userAddress = await this.checkExistingAddress(id);
+    const userAddress = await this.checkExistingUserAddress(id);
     const { commune, district, province } = await this.checkAddress(
       districtCode,
       provinceCode,
@@ -165,14 +165,14 @@ class UserService {
   }
 
   async deleteAddress(id: string | number) {
-    const userAddress = await this.checkExistingAddress(id);
+    const userAddress = await this.checkExistingUserAddress(id);
     await userAddressRepository.delete({
       id: userAddress.id,
     });
   }
 
   async setDefaultAddress(id: string | number) {
-    const userAddress = await this.checkExistingAddress(id);
+    const userAddress = await this.checkExistingUserAddress(id);
     const addressDefault = await userAddressRepository.findOneBy({
       isDefault: true,
     });

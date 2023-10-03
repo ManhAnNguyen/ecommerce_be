@@ -1,11 +1,11 @@
-export const enum EConfigRank {
+export enum EConfigRank {
   BRONZE = "BRONZE",
   SILVER = "SILVER",
   GOLD = "GOLD",
   DIAMOND = "DIAMOND",
 }
 
-export const enum EConfigStatusOrder {
+export enum EConfigStatusOrder {
   PENDING = "PENDING",
   APPROVED = "APPROVED",
   REJECTED = "REJECTED",
@@ -15,12 +15,12 @@ export const enum EConfigStatusOrder {
   SHIPPED = "SHIPPED",
 }
 
-export const enum EDefaultPagination {
+export enum EDefaultPagination {
   PAGE = 1,
   TAKE = 10,
 }
 
-export const enum EDefaultSort {
+export enum EDefaultSort {
   SORT_BY = "created_at",
   ORDER_BY = "ASC",
 }

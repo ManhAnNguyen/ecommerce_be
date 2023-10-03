@@ -7,7 +7,7 @@ import { User } from "../entity/User";
 import jwt from "jsonwebtoken";
 import { Request, Response } from "express";
 
-export class UserService {
+export class AuthService {
   //register
   async register(username: string, password: string) {
     if (!username || !password) {
